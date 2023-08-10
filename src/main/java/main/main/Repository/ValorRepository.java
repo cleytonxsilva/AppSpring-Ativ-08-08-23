@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ValorRepository {
+public interface ValorRepository {
 
     private List<Valor> valores = new ArrayList<>();
     public List<Valor> findAll() {

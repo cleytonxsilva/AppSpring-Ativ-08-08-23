@@ -6,6 +6,8 @@ import main.main.Repository.ValorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +42,7 @@ public class ValorService {
         double difQuadrado = 0;
         double desvioPadrao;
         for (int i = 0; i < listaValores.size(); i++){
-            double diferenca = listaValores.get(i).valor - media;
+            double diferenca = listaValores.get(i).getValor() - media;
             difQuadrado += Math.pow(diferenca, 2);
         }
         desvioPadrao = Math.sqrt(difQuadrado / (listaValores.size() - 1));
@@ -48,20 +50,21 @@ public class ValorService {
     }
 
     private double calculaMediana() {
-        List<Valor> listaValores = valorRepository.findAll();
 
+        List<Valor> listaValores = valorRepository.findAll();
+//        Collections.sort(listaValores);
         double mediana;
            if (listaValores.size() % 2 == 0){
 
                int aux = listaValores.size() / 2;
 
-               mediana = listaValores.get(aux).valor+listaValores.get(aux-1).valor;
+               mediana = listaValores.get(aux).getValor() +listaValores.get(aux-1).getValor();
 
                return mediana / 2;
            }
            else {
                int aux = listaValores.size() / 2;
-               mediana = listaValores.get(aux).valor;
+               mediana = listaValores.get(aux).getValor();
                return mediana;
            }
 
@@ -73,11 +76,14 @@ public class ValorService {
     }
 
     private double calculaMedia(){
-         List<Valor> listaValores = valorRepository.findAll();
 
+        List<Valor> listaValores = valorRepository.findAll();
+        if (listaValores.size()< 20){
+            throw new RuntimeException("Insira no mínimo 20 valores!");
+        }
          double valor = 0;
          for(int i = 0; i < listaValores.size(); i++){
-            valor += listaValores.get(i).valor;
+            valor += listaValores.get(i).getValor();
          }
          return valor / listaValores.size();
     }
