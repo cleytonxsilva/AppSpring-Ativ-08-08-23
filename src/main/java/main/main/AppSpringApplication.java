@@ -1,6 +1,5 @@
 package main.main;
 
-import main.main.Entity.Valor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

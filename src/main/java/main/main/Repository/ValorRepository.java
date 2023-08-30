@@ -1,21 +1,11 @@
 package main.main.Repository;
 
 
-import main.main.Entity.Valor;
-import org.springframework.stereotype.Repository;
+import main.main.DTO.ValorDTO;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.ArrayList;
-import java.util.List;
 
-@Repository
-public interface ValorRepository {
+public interface ValorRepository extends JpaRepository<ValorDTO, Long> {
 
-    private List<Valor> valores = new ArrayList<>();
-    public List<Valor> findAll() {
-        return this.valores;
-    }
 
-    public void save(Valor valor) {
-        valores.add(valor);
-    }
 }

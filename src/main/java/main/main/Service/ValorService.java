@@ -1,15 +1,12 @@
 package main.main.Service;
 
-import main.main.Entity.Informacao;
-import main.main.Entity.Valor;
+import main.main.DTO.InformacaoDTO;
+import main.main.DTO.ValorDTO;
 import main.main.Repository.ValorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ValorService {
@@ -18,26 +15,26 @@ public class ValorService {
     private ValorRepository valorRepository;
 
 
-    public List<Valor> findAll() {
+    public List<ValorDTO> findAll() {
         return valorRepository.findAll();
     }
 
-    public void create(Valor valor) {
+    public void create(ValorDTO valor) {
         valorRepository.save(valor);
     }
 
-    public Informacao informacao() {
-        Informacao informacao = new Informacao();
-        informacao.media = calculaMedia();
-        informacao.qtdValores = numerosCalculados();
-        informacao.mediana = calculaMediana();
-        informacao.desvioPadrao = calculaDesvioPadrao();
-        return informacao;
+    public InformacaoDTO informacao() {
+        InformacaoDTO informacaoDTO = new InformacaoDTO();
+        informacaoDTO.media = calculaMedia();
+        informacaoDTO.qtdValores = numerosCalculados();
+        informacaoDTO.mediana = calculaMediana();
+        informacaoDTO.desvioPadrao = calculaDesvioPadrao();
+        return informacaoDTO;
 
     }
 
     private double calculaDesvioPadrao() {
-        List<Valor> listaValores = valorRepository.findAll();
+        List<ValorDTO> listaValores = valorRepository.findAll();
         double media = calculaMedia();
         double difQuadrado = 0;
         double desvioPadrao;
@@ -51,7 +48,7 @@ public class ValorService {
 
     private double calculaMediana() {
 
-        List<Valor> listaValores = valorRepository.findAll();
+        List<ValorDTO> listaValores = valorRepository.findAll();
 //        Collections.sort(listaValores);
         double mediana;
            if (listaValores.size() % 2 == 0){
@@ -71,13 +68,13 @@ public class ValorService {
     }
 
     private int numerosCalculados() {
-        List<Valor> listaValores = valorRepository.findAll();
+        List<ValorDTO> listaValores = valorRepository.findAll();
         return listaValores.size();
     }
 
     private double calculaMedia(){
 
-        List<Valor> listaValores = valorRepository.findAll();
+        List<ValorDTO> listaValores = valorRepository.findAll();
         if (listaValores.size()< 20){
             throw new RuntimeException("Insira no mínimo 20 valores!");
         }
