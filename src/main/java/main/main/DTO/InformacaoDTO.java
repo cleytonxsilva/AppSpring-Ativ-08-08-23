@@ -11,14 +11,19 @@ import lombok.Setter;
 @NoArgsConstructor
 public class InformacaoDTO {
 
+    private double soma;
 
-    public double media;
+    private double media;
 
-    public double mediana;
+    private double mediana;
 
-    public int qtdValores;
+    private int qtdValores;
 
-    public double desvioPadrao;
+    private double desvioPadrao;
+
+    private double valorMaximo;
+
+    private double valorMinimo;
 
 
 }
