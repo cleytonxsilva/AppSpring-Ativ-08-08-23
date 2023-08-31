@@ -1,9 +1,9 @@
 package main.main.Service;
 
+
 import main.main.DTO.InformacaoDTO;
 import main.main.DTO.ValorDTO;
 import main.main.Repository.ValorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -125,4 +125,5 @@ public class ValorService {
          }
          return valor / listaValores.size();
     }
+
 }

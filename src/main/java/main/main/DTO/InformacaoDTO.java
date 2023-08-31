@@ -25,5 +25,4 @@ public class InformacaoDTO {
 
     private double valorMinimo;
 
-
 }
