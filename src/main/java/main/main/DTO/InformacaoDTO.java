@@ -5,24 +5,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class InformacaoDTO {
+public class InformacaoDTO implements Serializable {
 
-    private double soma;
+    private Double soma;
 
-    private double media;
+    private Double media;
 
-    private double mediana;
+    private Double mediana;
 
     private int qtdValores;
 
-    private double desvioPadrao;
+    private Double desvioPadrao;
 
-    private double valorMaximo;
+    private Double valorMaximo;
 
-    private double valorMinimo;
+    private Double valorMinimo;
 
 }

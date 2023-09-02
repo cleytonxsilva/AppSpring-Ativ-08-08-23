@@ -2,128 +2,89 @@ package main.main.Service;
 
 
 import main.main.DTO.InformacaoDTO;
-import main.main.DTO.ValorDTO;
-import main.main.Repository.ValorRepository;
+import main.main.InMemoryRepository.InMemoryValoresRepository;
+import main.main.Repository.ValoresRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ValorService {
 
-//    @Autowired
-    private ValorRepository valorRepository;
+    private final ValoresRepository valoresRepository = new InMemoryValoresRepository();
 
-
-    public List<ValorDTO> findAll() {
-        return valorRepository.findAll();
+    public Double create(Double valor) {
+        return valoresRepository.create(valor);
     }
 
-    public void create(ValorDTO valor) {
-        valorRepository.save(valor);
+    public List<Double> listar(){
+        return valoresRepository.listar();
     }
 
-    public InformacaoDTO informacao() {
-        InformacaoDTO informacaoDTO = new InformacaoDTO();
-        informacaoDTO.setQtdValores(numerosCalculados());
-        informacaoDTO.setSoma(somaNumeros());
-        informacaoDTO.setMedia(calculaMedia());
-        informacaoDTO.setMediana(calculaMediana());
-        informacaoDTO.setDesvioPadrao(calculaDesvioPadrao());
-        informacaoDTO.setValorMaximo(valorMaximo());
-        informacaoDTO.setValorMinimo(valorMinimo());
-        return informacaoDTO;
-
+    public Double somar(){
+        return valoresRepository.somar();
     }
 
-    private int numerosCalculados() {
-        List<ValorDTO> listaValores = valorRepository.findAll();
-        return listaValores.size();
-    }
-    private double valorMinimo() {
-        List<ValorDTO> listaValores = valorRepository.findAll();
-
-        List<Double> valores = new ArrayList<>();
-        for (ValorDTO valor : listaValores) {
-            valores.add(valor.getValor());
-        }
-
-        double menor = Collections.min(valores);
-        return menor;
+    public int tamanhoLista(){
+        return valoresRepository.listar().size();
     }
 
-    private double valorMaximo() {
-
-        List<ValorDTO> listaValores = valorRepository.findAll();
-
-        List<Double> valores = new ArrayList<>();
-        for (ValorDTO valor : listaValores) {
-            valores.add(valor.getValor());
-        }
-
-        double maior = Collections.max(valores);
-        return maior;
+    public Double valorMinimo() {
+        List<Double> listaValores = listar();
+        return Collections.min(listaValores);
     }
 
-    private double calculaDesvioPadrao() {
-        List<ValorDTO> listaValores = valorRepository.findAll();
-        double media = calculaMedia();
-        double difQuadrado = 0;
-        double desvioPadrao;
-        for (int i = 0; i < listaValores.size(); i++){
-            double diferenca = listaValores.get(i).getValor() - media;
-            difQuadrado += Math.pow(diferenca, 2);
-        }
-        desvioPadrao = Math.sqrt(difQuadrado / (listaValores.size() - 1));
-        return  desvioPadrao;
+    public Double valorMaximo() {
+        List<Double> listaValores = listar();
+        return Collections.max(listaValores);
     }
 
-    private double calculaMediana() {
-        List<ValorDTO> listaValores = valorRepository.findAll();
+    public Double calcularMedia(){
+        return somar() / tamanhoLista();
+    }
 
-        List<Double> valores = new ArrayList<>();
-        for (ValorDTO valor : listaValores) {
-            valores.add(valor.getValor());
-        }
+    public double calcularMediana() {
+        List<Double> listaValores = listar();
 
-        Collections.sort(valores);
+        Collections.sort(listaValores);
 
-        int tamanho = valores.size();
         double mediana;
 
-        if (tamanho % 2 == 0) {
-            int indice1 = tamanho / 2 - 1;
-            int indice2 = tamanho / 2;
-            mediana = (valores.get(indice1) + valores.get(indice2)) / 2;
+        if (listaValores.size() % 2 == 0) {
+            int indice1 = listaValores.size() / 2 - 1;
+            int indice2 = listaValores.size() / 2;
+            mediana = (listaValores.get(indice1) + listaValores.get(indice2)) / 2;
         } else {
-            int indice = tamanho / 2;
-            mediana = valores.get(indice);
+            int indice = listaValores.size() / 2;
+            mediana = listaValores.get(indice);
+
         }
 
         return mediana;
     }
-    private double somaNumeros() {
-        List<ValorDTO> listaValores = valorRepository.findAll();
-        double valor = 0;
-        for(int i = 0; i < listaValores.size(); i++){
-            valor += listaValores.get(i).getValor();
+
+    public Double calcularDesvioPadrao() {
+        List<Double> listaValores = listar();
+        Double media = calcularMedia();
+        Double difQuadrado = 0.0;
+
+        for (int i = 0; i < listaValores.size(); i++){
+            double diferenca = listaValores.get(i) - media;
+            difQuadrado += Math.pow(diferenca, 2);
         }
-        return valor;
+
+        return Math.sqrt(difQuadrado / (listaValores.size() - 1));
     }
 
-    private double calculaMedia(){
-
-        List<ValorDTO> listaValores = valorRepository.findAll();
-        if (listaValores.size()< 20){
-            throw new RuntimeException("Insira no mínimo 20 valores!");
-        }
-         double valor = 0;
-         for(int i = 0; i < listaValores.size(); i++){
-            valor += listaValores.get(i).getValor();
-         }
-         return valor / listaValores.size();
+    public InformacaoDTO informacao() {
+        return new InformacaoDTO(
+                somar(),
+                calcularMedia(),
+                calcularMediana(),
+                tamanhoLista(),
+                calcularDesvioPadrao(),
+                valorMaximo(),
+                valorMinimo()
+        );
     }
-
 }
